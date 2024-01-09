@@ -1,6 +1,7 @@
 import * as http from "http"
 http.createServer(async function (req, res) {
-    res.setHeader('Access-Control-Allow-Headers', req.header.origin);
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
     let q = "lấy ra toàn bộ hóa đơn của khách tên BAO"
     let sql = await question(q)
     let resultQuery = await db.run(sql)

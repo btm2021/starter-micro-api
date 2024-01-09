@@ -1,4 +1,4 @@
-var http = require('http');
+import * as http from "http"
 http.createServer(async function (req, res) {
 
     let q = "lấy ra toàn bộ hóa đơn của khách tên BAO"
@@ -82,3 +82,4 @@ async function question(q) {
     return new Promise((resolve, reject) => {
         resolve(result)
     })
+}

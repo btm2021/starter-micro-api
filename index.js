@@ -52,17 +52,9 @@ const datasource = new DataSource({
 const llm = new OpenAI({
     modelName: "gpt-3.5-turbo",
     temperature: 0.7,
-    openAIApiKey: "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", // In Node.js defaults to process.env.OPENAI_API_KEY
 });
 
 
-// let apiK = 'AIzaSyAi1mVkvR9wBxhWOGToa4CgwmpwOfWq5g8'
-// const llm = new ChatGoogleGenerativeAI({
-//   modelName: "gemini-pro",
-//   maxOutputTokens: 2048,
-//   temperature: 1,
-//   apiKey: apiK
-// });
 const db = await SqlDatabase.fromDataSourceParams({
     appDataSource: datasource,
 });

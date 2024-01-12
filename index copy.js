@@ -1,10 +1,13 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-const app = express();
-const port = process.env.PORT || 3001; // Bạn có thể thay đổi cổng tùy ý
+import * as http from "http"
+http.createServer(async function (req, res) {
 
-import morgan from 'morgan';
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    let q = "lấy ra toàn bộ hóa đơn của khách tên BAO"
+    let sql = await question(q)
+    let resultQuery = await db.run(sql)
+    let finalReturn = { question: q, sql, resultQuery }
+    res.end(JSON.stringify(finalReturn));
+}).listen(process.env.PORT || 3000);
 
 import { DataSource } from "typeorm";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
@@ -17,35 +20,6 @@ import {
 import { OpenAI } from "@langchain/openai";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import translate from "translate";
-
-
-app.use(cors());
-app.use(morgan('tiny'));
-
-app.use(bodyParser.json());
-
-app.post('/api', async (req, res) => {
-    // const question = req.body.questionFromUI;
-    let qs = req.body.question
-    if (qs != null && qs != '') {
-        let q = qs
-        console.log(qs)
-        let sql = await question(q)
-        let resultQuery = await db.run(sql)
-        let finalReturn = { question: q, sql, resultQuery }
-        res.json(finalReturn)
-    } else {
-        res.json({ status: 404, message: 'Missing Q' })
-    }
-
-});
-
-
-app.listen(port, () => {
-    console.log(`Server đang chạy trên cổng ${port}`);
-});
-
-
 
 const template = `You are a Postgres expert. Given an input question, first create a syntactically correct Postgres query to run, then look at the results of the query and return the answer to the input question.
 Always query for all columns from a table. Wrap each column name in double quotes (") to denote them as delimited identifiers.
@@ -78,7 +52,6 @@ const datasource = new DataSource({
 const llm = new OpenAI({
     modelName: "gpt-3.5-turbo",
     temperature: 0.7,
-    openAIApiKey: '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'
 });
 
 
@@ -88,6 +61,7 @@ const db = await SqlDatabase.fromDataSourceParams({
 
 async function question(q) {
 
+    console.log(q)
     const textTrain = await translate(q, { to: "en", from: "vi" })
     //console.log(textTrain)
 

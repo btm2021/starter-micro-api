@@ -19,33 +19,6 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 import translate from "translate";
 
 
-app.use(cors());
-app.use(morgan('tiny'));
-
-app.use(bodyParser.json());
-
-app.post('/api', async (req, res) => {
-    // const question = req.body.questionFromUI;
-    let qs = req.body.question
-    if (qs != null && qs != '') {
-        let q = qs
-        console.log(qs)
-        let sql = await question(q)
-        let resultQuery = await db.run(sql)
-        let finalReturn = { question: q, sql, resultQuery }
-        res.json(finalReturn)
-    } else {
-        res.json({ status: 404, message: 'Missing Q' })
-    }
-
-});
-
-
-app.listen(port, () => {
-    console.log(`Server đang chạy trên cổng ${port}`);
-});
-
-
 
 const template = `You are a Postgres expert. Given an input question, first create a syntactically correct Postgres query to run, then look at the results of the query and return the answer to the input question.
 Always query for all columns from a table. Wrap each column name in double quotes (") to denote them as delimited identifiers.
@@ -77,7 +50,7 @@ const datasource = new DataSource({
 
 const llm = new OpenAI({
     modelName: "gpt-3.5-turbo",
-    temperature: 0.7
+    temperature: 0.8
 });
 
 
@@ -108,3 +81,31 @@ async function question(q) {
         resolve(result)
     })
 }
+
+
+
+app.use(cors());
+app.use(morgan('tiny'));
+
+app.use(bodyParser.json());
+
+app.post('/api', async (req, res) => {
+    // const question = req.body.questionFromUI;
+    let qs = req.body.question
+    if (qs != null && qs != '') {
+        let q = qs
+        console.log(qs)
+        let sql = await question(q)
+        let resultQuery = await db.run(sql)
+        let finalReturn = { question: q, sql, resultQuery }
+        res.json(finalReturn)
+    } else {
+        res.json({ status: 404, message: 'Missing Q' })
+    }
+
+});
+
+
+app.listen(port, () => {
+    console.log(`Server đang chạy trên cổng ${port}`);
+});

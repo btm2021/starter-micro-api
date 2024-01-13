@@ -1,0 +1,38 @@
+{"messages": [{"role": "system", "content": "Query invoices by customer name."}, {"role": "user", "content": "Show me all invoices for customer John Doe."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE customer_name = 'John Doe';"}]}
+{"messages": [{"role": "system", "content": "Query invoices by invoice number."}, {"role": "user", "content": "Find invoice number 12345."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_number = 12345;"}]}
+
+{"messages": [{"role": "system", "content": "Calculate total invoice money for a specific day."}, {"role": "user", "content": "What is the total invoice money for 2023-01-01?"}, {"role": "assistant", "content": "SELECT SUM(invoice_money) FROM public.invoice WHERE invoice_date_create = '2023-01-01';"}]}
+
+{"messages": [{"role": "system", "content": "Query invoices by status."}, {"role": "user", "content": "Show all unpaid invoices."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_status = false;"}]}
+
+{"messages": [{"role": "system", "content": "Find invoices within a date range."}, {"role": "user", "content": "Show invoices between 2023-01-01 and 2023-02-01."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_date_create BETWEEN '2023-01-01' AND '2023-02-01';"}]}
+
+{"messages": [{"role": "system", "content": "Query invoices by invoice type."}, {"role": "user", "content": "Find all retail invoices."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_type = 'retail';"}]}
+
+{"messages": [{"role": "system", "content": "List invoices with comments."}, {"role": "user", "content": "Which invoices have comments?"}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_comment IS NOT NULL;"}]}
+
+{"messages": [{"role": "system", "content": "Query the total profit."}, {"role": "user", "content": "What is the total profit?"}, {"role": "assistant", "content": "SELECT SUM(invoice_profit) FROM public.invoice;"}]}
+
+{"messages": [{"role": "system", "content": "List invoices by phone number."}, {"role": "user", "content": "Show invoices for phone number 123-456-7890."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_phone = '123-456-7890';"}]}
+
+{"messages": [{"role": "system", "content": "Find invoices by specific tag."}, {"role": "user", "content": "Get all invoices with tag 'urgent'."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_tag = 'urgent';"}]}
+
+{"messages": [{"role": "system", "content": "Query invoices by store name."}, {"role": "user", "content": "List all invoices from 'Main Street Store'."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_store = 'Main Street Store';"}]}
+
+{"messages": [{"role": "system", "content": "Query invoices by store type."}, {"role": "user", "content": "Show all invoices from online stores."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_store_type = 'online';"}]}
+
+{"messages": [{"role": "system", "content": "List invoices by category."}, {"role": "user", "content": "Show all invoices in the electronics category."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_cat = 'electronics';"}]}
+
+{"messages": [{"role": "system", "content": "Count the number of invoices."}, {"role": "user", "content": "How many invoices are there?"}, {"role": "assistant", "content": "SELECT COUNT(*) FROM public.invoice;"}]}
+
+{"messages": [{"role": "system", "content": "Update invoice status."}, {"role": "user", "content": "Mark invoice 12345 as paid."}, {"role": "assistant", "content": "UPDATE public.invoice SET invoice_status = true WHERE invoice_number = 12345;"}]}
+
+{"messages": [{"role": "system", "content": "Delete an invoice."}, {"role": "user", "content": "Delete invoice number 54321."}, {"role": "assistant", "content": "DELETE FROM public.invoice WHERE invoice_number = 54321;"}]}
+
+{"messages": [{"role": "system", "content": "Query latest invoices."}, {"role": "user", "content": "Show the latest 10 invoices."}, {"role": "assistant", "content": "SELECT * FROM public.invoice ORDER BY invoice_date_create DESC LIMIT 10;"}]}
+
+{"messages": [{"role": "system", "content": "Find invoices with highest profit."}, {"role": "user", "content": "Which invoice has the highest profit?"}, {"role": "assistant", "content": "SELECT * FROM public.invoice ORDER BY invoice_profit DESC LIMIT 1;"}]}
+
+{"messages": [{"role": "system", "content": "Query invoices by phone and date."}, {"role": "user", "content": "Show all invoices for phone number 987-654-3210 from January 2023."}, {"role": "assistant", "content": "SELECT * FROM public.invoice WHERE invoice_phone = '987-654-3210' AND EXTRACT(MONTH FROM invoice_date_create) = 1 AND EXTRACT(YEAR FROM invoice_date_create) = 2023;"}]}
+
+{"messages": [{"role": "system", "content": "List all unique customer names."}, {"role": "user", "content": "What are the unique customer names in the database?"}, {"role": "assistant", "content": "SELECT DISTINCT customer_name FROM public.invoice;"}]}

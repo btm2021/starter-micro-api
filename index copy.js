@@ -78,8 +78,49 @@ async function question(q) {
     const result = await sqlQueryGeneratorChain.invoke({
         question: textTrain,
     });
+    console.log(result)
+    //chain giải thích
 
+    const finalChain = RunnableSequence.from([
+        {
+            question: (input) => input.question,
+            query: sqlQueryChain,
+        },
+        {
+            schema: async () => db.getTableInfo(),
+            question: (input) => input.question,
+            query: (input) => input.query,
+            response: (input) => db.run(input.query),
+        },
+        finalResponsePrompt,
+        llm,
+        new StringOutputParser(),
+    ]);
+
+    const finalResponse = await finalChain.invoke({
+        question,
+    });
+
+    console.log({ finalResponse });
     return new Promise((resolve, reject) => {
+
         resolve(result)
     })
 }
+
+question("tìm các hóa đơn của khách hàng tên BAO")
+
+
+const finalResponsePrompt =
+    PromptTemplate.fromTemplate(`Based on the table schema below, question, SQL query, and SQL response, write a natural language response as vietnamese language:
+------------
+SCHEMA: {schema}
+------------
+QUESTION: {question}
+------------
+SQL QUERY: {query}
+------------
+SQL RESPONSE: {response}
+------------
+NATURAL LANGUAGE RESPONSE:`);
+

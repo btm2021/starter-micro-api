@@ -60,8 +60,8 @@ const datasource = new DataSource({
 
 const llm = new OpenAI({
     modelName: "gpt-3.5-turbo",
-    temperature: 0.7,
-
+    temperature: 0.5,
+    openAIApiKey: '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'
 });
 
 
@@ -108,41 +108,41 @@ async function question(q) {
         question: q,
     });
     console.log({ res });
-    let finalResponse = await db.run(res)
-    //     const finalResponsePrompt =
-    //         PromptTemplate.fromTemplate(`
-    //         Based on the table schema below, the question, the SQL query, and the SQL response.
-    // Write the answer in natural language in Vietnamese.
-    //     ------------
-    //     SCHEMA: {schema}
-    //     ------------
-    //     QUESTION: {question}
-    //     ------------
-    //     SQL QUERY: {query}
-    //     ------------
-    //     SQL RESPONSE: {response}
-    //     ------------
-    //     NATURAL LANGUAGE RESPONSE:`);
+    let finalResponse = db.run(res)
+//     const finalResponsePrompt =
+//         PromptTemplate.fromTemplate(`
+//         Based on the table schema below, the question, the SQL query, and the SQL response.
+// Write the answer in natural language in Vietnamese.
+//     ------------
+//     SCHEMA: {schema}
+//     ------------
+//     QUESTION: {question}
+//     ------------
+//     SQL QUERY: {query}
+//     ------------
+//     SQL RESPONSE: {response}
+//     ------------
+//     NATURAL LANGUAGE RESPONSE:`);
 
-    //     const finalChain = RunnableSequence.from([
-    //         {
-    //             question: (input) => input.question,
-    //             query: sqlQueryChain,
-    //         },
-    //         {
-    //             schema: async () => db.getTableInfo(),
-    //             question: (input) => input.question,
-    //             query: (input) => input.query,
-    //             response: (input) => db.run(input.query),
-    //         },
-    //         finalResponsePrompt,
-    //         llm,
-    //         new StringOutputParser(),
-    //     ]);
+//     const finalChain = RunnableSequence.from([
+//         {
+//             question: (input) => input.question,
+//             query: sqlQueryChain,
+//         },
+//         {
+//             schema: async () => db.getTableInfo(),
+//             question: (input) => input.question,
+//             query: (input) => input.query,
+//             response: (input) => db.run(input.query),
+//         },
+//         finalResponsePrompt,
+//         llm,
+//         new StringOutputParser(),
+//     ]);
 
-    //     const finalResponse = await finalChain.invoke({
-    //         question: q,
-    //     });
+//     const finalResponse = await finalChain.invoke({
+//         question: q,
+//     });
 
     console.log({ finalResponse });
     return new Promise((resolve, reject) => {
@@ -159,18 +159,14 @@ app.use(bodyParser.json());
 
 app.post('/api', async (req, res) => {
     // const question = req.body.questionFromUI;
-    try {
-        let qs = req.body.question
-        if (qs != null && qs != '') {
-            let q = qs
-            console.log(qs)
-            let sql = await question(q)
-            res.json(sql)
-        } else {
-            res.json({ status: 404, message: 'Missing Q' })
-        }
-    } catch (e) {
-        res.json({ status: 404, message: 'Missing Q1' })
+    let qs = req.body.question
+    if (qs != null && qs != '') {
+        let q = qs
+        console.log(qs)
+        let sql = await question(q)
+        res.json(sql)
+    } else {
+        res.json({ status: 404, message: 'Missing Q' })
     }
 
 });
